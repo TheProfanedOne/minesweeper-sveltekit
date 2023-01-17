@@ -1,11 +1,20 @@
 import { sveltekit } from '@sveltejs/kit/vite';
-import type { UserConfig } from 'vite';
+import { defineConfig, searchForWorkspaceRoot } from 'vite';
 
-const config: UserConfig = {
+export default defineConfig({
 	plugins: [sveltekit()],
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}']
+	},
+	server: {
+		fs: {
+			allow: [
+				// search up for workspace root
+				searchForWorkspaceRoot(process.cwd()),
+				
+				// my custom rule
+				'./src-rust/'
+			]
+		}
 	}
-};
-
-export default config;
+});
